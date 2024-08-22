@@ -1,6 +1,6 @@
-import { Controller, Request, Post, Get, UseGuards } from '@nestjs/common';
+import { Controller, Request, Post, Get, UseGuards, BadRequestException } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './jwt-auth.guard'; 
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -8,11 +8,21 @@ export class AuthController {
 
     @Post('login')
     async login(@Request() req) {
-        return this.authService.login(req.body);
+
+        try {
+            return this.authService.login(req.body);
+
+        } catch (error) {
+
+            throw new BadRequestException('Erro no servidor, entrar em contato com o suporte');
+        }
+
     }
+
     @UseGuards(JwtAuthGuard)
-    @Get('teste')
-    getTeste(){
-        return 'teste';
+    @Get('validate-token')
+    async validateToken(@Request() req){
+        return true
     }
+    
 }

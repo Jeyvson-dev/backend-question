@@ -1,17 +1,21 @@
-import { Controller, Get, Param, Post, Body, UsePipes, ValidationPipe, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, UsePipes, ValidationPipe, BadRequestException, UseGuards } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { Question } from './entities/question.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('question')
 export class QuestionController {
 
     constructor(private readonly questionService: QuestionService) { }
 
+    @UseGuards(JwtAuthGuard)
     @Get()
     async findAll(): Promise<Question[]> {
         return this.questionService.findAll();
     }
+
+    @UseGuards(JwtAuthGuard)
     @Post()
     @UsePipes(new ValidationPipe({
         exceptionFactory: (errors) => {
@@ -33,7 +37,7 @@ export class QuestionController {
             return questionSaved;
 
         } catch (error) {
-            throw new BadRequestException('Houve um erro no servidor, por favor entrar em contato com o suporte');
+            throw new BadRequestException('Erro no servidor, entrar em contato com o suporte');
         }
     
     }
