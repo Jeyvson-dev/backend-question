@@ -22,7 +22,7 @@ function login() {
             if (result.access_token) {
 
                 localStorage.setItem('token_jwt_logged_user', result.access_token);
-                window.location.href = './questions/list/';
+                window.location.href = './questions/';
 
             } else {
 
