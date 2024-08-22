@@ -28,5 +28,18 @@ class Request {
             });
     }
 
+    getRequestValidateToken(requestOptions){
+
+        return fetch("http://localhost:3000/auth/validate-token", requestOptions)
+            .then((response) => {
+                if (response.ok) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+
+    }
+
 }
 export default Request;
