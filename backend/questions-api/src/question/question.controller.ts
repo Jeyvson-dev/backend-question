@@ -41,5 +41,15 @@ export class QuestionController {
         }
     
     }
+    
+    @UseGuards(JwtAuthGuard)
+    @Post('create-question-with-alternative')
+    createQuestionWithAlternatives(@Body() createQuestionDto: any){
+
+        const { title, description, alternatives } = createQuestionDto;
+        console.log(alternatives);
+        return 'teste'
+    }
+
 
 }
