@@ -16,7 +16,7 @@ class Request {
 
     getRequestQuestions(requestOptions) {
 
-        return fetch("http://localhost:3000/question/", requestOptions)
+        return fetch("http://localhost:3000/question/get-all-question-with-alternatives", requestOptions)
             .then((response) => {
                 if (response.ok) {
                     return response.json();

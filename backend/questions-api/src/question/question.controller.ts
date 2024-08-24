@@ -3,6 +3,9 @@ import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { Question } from './entities/question.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { CreateQuestionWithAlternativesDto } from './dto/create-question-with-alternative.dto';
+import { plainToClass } from 'class-transformer';
+import { CreateAlternativesDto } from 'src/alternatives/dto/create-alternatives.dto';
 import { promises } from 'dns';
 
 @Controller('question')
@@ -51,10 +54,11 @@ export class QuestionController {
     
     @UseGuards(JwtAuthGuard)
     @Post('create-question-with-alternative')
-    createQuestionWithAlternatives(@Body() createQuestionDto: any){
+    createQuestionWithAlternatives(@Body() questionWithAlternativeDto: CreateQuestionWithAlternativesDto){
 
-        const { title, description, alternatives } = createQuestionDto;
-        return this.questionService.createQuestionWithAlternatives(title, description, alternatives);
+        const { title, description, alternatives } = questionWithAlternativeDto;
+
+        return  this.questionService.createQuestionWithAlternatives(questionWithAlternativeDto);
     }
 
 

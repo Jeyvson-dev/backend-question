@@ -8,6 +8,9 @@ import { AlternativesController } from './alternatives.controller';
     imports: [TypeOrmModule.forFeature([Alternative])],
     providers: [AlternativesService],
     controllers: [AlternativesController],
-    exports: [TypeOrmModule]
+    exports: [
+      TypeOrmModule, 
+      AlternativesService
+    ]
   })
 export class AlternativesModule {}
