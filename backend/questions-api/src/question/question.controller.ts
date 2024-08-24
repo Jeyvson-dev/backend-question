@@ -3,6 +3,7 @@ import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { Question } from './entities/question.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { promises } from 'dns';
 
 @Controller('question')
 export class QuestionController {
@@ -13,6 +14,12 @@ export class QuestionController {
     @Get()
     async findAll(): Promise<Question[]> {
         return this.questionService.findAll();
+    }
+
+    @Get('get-all-question-with-alternatives')
+    async findAllQuestionWithAlternative() : Promise<any> {
+
+        return this.questionService.findAllQuestionWithAlternatives();
     }
 
     @UseGuards(JwtAuthGuard)
@@ -47,8 +54,7 @@ export class QuestionController {
     createQuestionWithAlternatives(@Body() createQuestionDto: any){
 
         const { title, description, alternatives } = createQuestionDto;
-        console.log(alternatives);
-        return 'teste'
+        return this.questionService.createQuestionWithAlternatives(title, description, alternatives);
     }
 
 
