@@ -22,23 +22,20 @@ export class QuestionService {
 
   async findAllQuestionWithAlternatives(): Promise<any> {
     const questions = await this.questionRepository.find({
-      relations: ['alternatives']
+      relations: ['alternatives'],
     });
 
     return questions.map((question) => {
-      const alternativesObj = question.alternatives.reduce((acc, alt, index) => {
-        acc[`alternative${index + 1}`] = {
-          description: alt.description,
-          isCorrectAlternative: alt.isCorrectAlternative,
-        };
-        return acc;
-      }, {});
+      const alternativesArray = question.alternatives.map((alt) => ({
+        description: alt.description,
+        isCorrectAlternative: alt.isCorrectAlternative,
+      }));
 
       return {
         id: question.id,
         title: question.title,
         description: question.description,
-        alternatives: alternativesObj,
+        alternatives: alternativesArray,
         createdAt: question.createdAt,
         updatedAt: question.updatedAt,
       };
@@ -50,22 +47,22 @@ export class QuestionService {
     return this.questionRepository.save(question);
   }
 
-  async createQuestionWithAlternatives(questionWithAlternativeDto :  CreateQuestionWithAlternativesDto): Promise<Question> {
+  async createQuestionWithAlternatives(questionWithAlternativeDto: CreateQuestionWithAlternativesDto): Promise<Question> {
 
     try {
-    
+
       await this.alternativesService.validateAlternatives(questionWithAlternativeDto);
-      
-      const question = this.questionRepository.create({ 
-        title: questionWithAlternativeDto.title, 
+
+      const question = this.questionRepository.create({
+        title: questionWithAlternativeDto.title,
         description: questionWithAlternativeDto.description
       });
       await this.questionRepository.save(question);
 
       const alternativesEntities = await this.alternativesService.create(questionWithAlternativeDto, question);
-  
+
       question.alternatives = alternativesEntities;
-  
+
       return question;
 
     } catch (error) {
