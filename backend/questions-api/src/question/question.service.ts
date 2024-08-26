@@ -55,7 +55,8 @@ export class QuestionService {
 
       const question = this.questionRepository.create({
         title: questionWithAlternativeDto.title,
-        description: questionWithAlternativeDto.description
+        description: questionWithAlternativeDto.description,
+        subjects: questionWithAlternativeDto.subjects.toUpperCase()
       });
       await this.questionRepository.save(question);
 

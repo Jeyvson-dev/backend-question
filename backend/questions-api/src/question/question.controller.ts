@@ -42,6 +42,7 @@ export class QuestionController {
     async create(@Body() createQuestionDto: CreateQuestionDto): Promise<Question> {
 
         try {
+
             const questionSaved = this.questionService.create(createQuestionDto);
 
             return questionSaved;
@@ -55,8 +56,6 @@ export class QuestionController {
     @UseGuards(JwtAuthGuard)
     @Post('create-question-with-alternative')
     createQuestionWithAlternatives(@Body() questionWithAlternativeDto: CreateQuestionWithAlternativesDto){
-
-        const { title, description, alternatives } = questionWithAlternativeDto;
 
         return  this.questionService.createQuestionWithAlternatives(questionWithAlternativeDto);
     }
